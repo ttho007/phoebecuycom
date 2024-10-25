@@ -1,30 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import ProductCard from '../../components/ProductCard.astro';
+import { products } from '../../data/products';
 
 export function getStaticPaths() {
-  const products = [
-    {
-      title: "Handmade Cotton Quilt - Floral Pattern",
-      price: 199.99,
-      image: "https://images.unsplash.com/photo-1528301721190-186c3bd85418?fm=jpg&w=1200",
-      slug: "handmade-cotton-quilt-floral",
-      description: "Beautiful handcrafted quilt with intricate floral patterns, perfect for any bedroom.",
-      details: {
-        materials: ["100% Cotton", "Cotton batting"],
-        dimensions: "90\" x 90\" (Queen size)",
-        care: "Machine washable on gentle cycle, tumble dry low",
-        features: [
-          "Handcrafted with care",
-          "Pre-washed fabric",
-          "Double-stitched for durability",
-          "Includes care instructions"
-        ]
-      }
-    },
-    // Add more products here with their full details
-  ];
-
   return products.map((product) => ({
     params: { slug: product.slug },
     props: { product }
@@ -33,63 +11,118 @@ export function getStaticPaths() {
 
 const { product } = Astro.props;
 
-// Related products would typically be fetched based on category, tags, etc.
-const relatedProducts = [
-  {
-    title: "Vintage Style Patchwork Quilt",
-    price: 249.99,
-    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?fm=jpg&w=1200",
-    slug: "vintage-style-patchwork-quilt",
-    description: "Classic patchwork design inspired by traditional quilting patterns."
-  },
-  {
-    title: "Modern Geometric Quilt Set",
-    price: 299.99,
-    image: "https://images.unsplash.com/photo-1605134542908-581a01bc658d?fm=jpg&w=1200",
-    slug: "modern-geometric-quilt-set",
-    description: "Contemporary quilt set featuring bold geometric patterns."
+// Generate schema.org structured data
+const productSchema = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": product.title,
+  "description": product.description,
+  "image": product.image,
+  "offers": {
+    "@type": "Offer",
+    "price": product.price,
+    "priceCurrency": "USD",
+    "availability": "https://schema.org/InStock"
   }
-];
+};
 ---
 
-<Layout title={product.title} description={product.description} currentPage={`/shop/${product.slug}`}>
+<Layout 
+  title={`${product.title} | Phoebecuy Quilts`}
+  description={`${product.description} High-quality handcrafted quilt available at Phoebecuy.`}
+  currentPage={`/shop/${product.slug}`}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(productSchema)} />
+  
   <main class="product-page">
     <div class="product-container">
       <div class="product-image">
-        <img src={product.image} alt={product.title} />
+        <img src={product.image} alt={product.title} width="600" height="600" />
       </div>
 
       <div class="product-info">
         <h1>{product.title}</h1>
         <p class="price">${product.price.toFixed(2)}</p>
-        <p class="description">{product.description}</p>
+        <div class="description">
+          <h2>Product Description</h2>
+          <p>{product.description}</p>
+          
+          <div class="features">
+            <h3>Features</h3>
+            <ul>
+              <li>Premium quality materials</li>
+              <li>Handcrafted with attention to detail</li>
+              <li>Machine washable</li>
+              <li>Perfect for any bedroom or living space</li>
+            </ul>
+          </div>
 
-        <div class="details">
-          <h2>Product Details</h2>
-          <ul>
-            <li><strong>Materials:</strong> {product.details.materials.join(', ')}</li>
-            <li><strong>Dimensions:</strong> {product.details.dimensions}</li>
-            <li><strong>Care:</strong> {product.details.care}</li>
-          </ul>
-
-          <h3>Features</h3>
-          <ul>
-            {product.details.features.map(feature => (
-              <li>{feature}</li>
-            ))}
-          </ul>
+          <div class="specifications">
+            <h3>Specifications</h3>
+            <ul>
+              <li><strong>Material:</strong> 100% Premium Cotton</li>
+              <li><strong>Size Options:</strong> Twin, Queen, King</li>
+              <li><strong>Care Instructions:</strong> Machine wash cold, tumble dry low</li>
+              <li><strong>Made in:</strong> USA</li>
+            </ul>
+          </div>
         </div>
 
-        <button class="add-to-cart">Add to Cart</button>
+        <div class="purchase-options">
+          <div class="size-selector">
+            <label for="size">Select Size:</label>
+            <select id="size" name="size" class="select-input">
+              <option value="twin">Twin</option>
+              <option value="queen">Queen</option>
+              <option value="king">King</option>
+            </select>
+          </div>
+
+          <div class="quantity-selector">
+            <label for="quantity">Quantity:</label>
+            <input 
+              type="number" 
+              id="quantity" 
+              name="quantity" 
+              min="1" 
+              value="1" 
+              class="number-input"
+            />
+          </div>
+
+          <button class="add-to-cart">Add to Cart</button>
+        </div>
+
+        <div class="additional-info">
+          <div class="shipping">
+            <h3>Shipping Information</h3>
+            <p>Free shipping on orders over $100</p>
+            <p>Expected delivery: 5-7 business days</p>
+          </div>
+
+          <div class="guarantee">
+            <h3>Our Guarantee</h3>
+            <p>30-day money-back guarantee</p>
+            <p>Lifetime warranty against manufacturing defects</p>
+          </div>
+        </div>
       </div>
     </div>
 
     <section class="related-products">
       <h2>You May Also Like</h2>
       <div class="related-grid">
-        {relatedProducts.map((relatedProduct) => (
-          <ProductCard {...relatedProduct} />
-        ))}
+        {products
+          .filter(p => p.slug !== product.slug)
+          .slice(0, 3)
+          .map(relatedProduct => (
+            <a href={`/shop/${relatedProduct.slug}`} class="related-product">
+              <img src={relatedProduct.image} alt={relatedProduct.title} />
+              <h3>{relatedProduct.title}</h3>
+              <p class="price">${relatedProduct.price.toFixed(2)}</p>
+            </a>
+          ))
+        }
       </div>
     </section>
   </main>
@@ -113,48 +146,67 @@ const relatedProducts = [
     width: 100%;
     height: auto;
     border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   }
 
-  .product-info h1 {
+  .product-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  h1 {
     font-size: 2.5rem;
-    margin-bottom: 1rem;
     color: var(--accent-dark);
+    margin-bottom: 0.5rem;
   }
 
   .price {
     font-size: 2rem;
     color: var(--accent);
-    margin-bottom: 1rem;
+    font-weight: bold;
   }
 
   .description {
-    font-size: 1.1rem;
     line-height: 1.6;
-    margin-bottom: 2rem;
   }
 
-  .details {
-    margin-bottom: 2rem;
-  }
-
-  .details h2 {
-    font-size: 1.5rem;
+  h2, h3 {
+    color: var(--accent-dark);
     margin-bottom: 1rem;
   }
 
-  .details h3 {
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  h3 {
     font-size: 1.2rem;
-    margin: 1rem 0;
   }
 
-  .details ul {
-    list-style: none;
-    padding: 0;
+  ul {
+    list-style: disc;
+    margin-left: 1.5rem;
+    margin-bottom: 1.5rem;
   }
 
-  .details li {
+  li {
     margin-bottom: 0.5rem;
-    line-height: 1.6;
+  }
+
+  .purchase-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+
+  .select-input, .number-input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 0.5rem;
   }
 
   .add-to-cart {
@@ -172,20 +224,44 @@ const relatedProducts = [
     background: var(--accent-dark);
   }
 
+  .additional-info {
+    border-top: 1px solid #ddd;
+    padding-top: 2rem;
+    margin-top: 2rem;
+  }
+
   .related-products {
     margin-top: 4rem;
   }
 
-  .related-products h2 {
-    font-size: 2rem;
-    margin-bottom: 2rem;
-    text-align: center;
-  }
-
   .related-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .related-product {
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.3s ease;
+  }
+
+  .related-product:hover {
+    transform: translateY(-5px);
+  }
+
+  .related-product img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+  }
+
+  .related-product h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
   }
 
   @media (max-width: 768px) {
@@ -194,21 +270,21 @@ const relatedProducts = [
       gap: 2rem;
     }
 
-    .product-info h1 {
-      font-size: 2rem;
-    }
-
     .related-grid {
       grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 1rem;
     }
   }
 </style>
 
 <script>
   const addToCartButton = document.querySelector('.add-to-cart');
+  const sizeSelect = document.getElementById('size') as HTMLSelectElement;
+  const quantityInput = document.getElementById('quantity') as HTMLInputElement;
+
   addToCartButton?.addEventListener('click', () => {
+    const size = sizeSelect.value;
+    const quantity = parseInt(quantityInput.value);
     // Here you would typically handle adding the item to the cart
-    alert('Item added to cart!');
+    alert(`Added ${quantity} ${size} size quilt(s) to cart!`);
   });
 </script>
