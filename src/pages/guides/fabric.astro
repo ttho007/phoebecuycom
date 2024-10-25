@@ -1,0 +1,45 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const fabricGuides = [
+  { title: 'Cotton Quilting Fabrics', url: '/guides/cotton-quilting-fabrics' },
+  { title: 'Wool Batting', url: '/guides/wool-batting' },
+  { title: 'Bamboo Batting', url: '/guides/bamboo-batting' },
+  { title: 'Silk for Quilting', url: '/guides/silk-for-quilting' },
+  { title: 'Quilt Size Guide', url: '/guides/quilt-sizes' },
+];
+
+---
+
+<Layout title="Fabric and Material Guides" description="Comprehensive guides on quilt fabrics and materials">
+  <h1>Fabric and Material Guides</h1>
+  
+  <div class="guide-grid">
+    {fabricGuides.map((guide) => (
+      <div class="guide-item">
+        <a href={guide.url}>{guide.title}</a>
+      </div>
+    ))}
+  </div>
+</Layout>
+
+<style>
+  .guide-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  .guide-item {
+    background-color: #f0f0f0;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  .guide-item a {
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  .guide-item a:hover {
+    text-decoration: underline;
+  }
+</style>

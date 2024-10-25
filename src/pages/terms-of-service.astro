@@ -1,0 +1,101 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+---
+
+<Layout title="Terms of Service" currentPage="/terms-of-service">
+  <main class="terms-content">
+    <h1>Terms of Service</h1>
+    
+    <p>Last updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+
+    <section>
+      <h2>Agreement to Terms</h2>
+      <p>By accessing and using Phoebecuy.com, you agree to be bound by these Terms of Service and all applicable laws and regulations.</p>
+    </section>
+
+    <section>
+      <h2>Use License</h2>
+      <p>Permission is granted to temporarily access the materials on Phoebecuy's website for personal, non-commercial use only. This is the grant of a license, not a transfer of title.</p>
+      
+      <p>Under this license, you may not:</p>
+      <ul>
+        <li>Modify or copy the materials</li>
+        <li>Use the materials for any commercial purpose</li>
+        <li>Remove any copyright or other proprietary notations</li>
+        <li>Transfer the materials to another person</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Disclaimer</h2>
+      <p>The materials on Phoebecuy's website are provided on an 'as is' basis. Phoebecuy makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation:</p>
+      <ul>
+        <li>Implied warranties of merchantability</li>
+        <li>Fitness for a particular purpose</li>
+        <li>Non-infringement of intellectual property</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Limitations</h2>
+      <p>In no event shall Phoebecuy or its suppliers be liable for any damages arising out of the use or inability to use the materials on Phoebecuy's website.</p>
+    </section>
+
+    <section>
+      <h2>Governing Law</h2>
+      <p>These terms and conditions are governed by and construed in accordance with the laws of the United States and the State of Delaware.</p>
+    </section>
+
+    <section>
+      <h2>Contact Information</h2>
+      <p>If you have any questions about these Terms of Service, please contact us at:</p>
+      <p>Email: contact@phoebecuy.net</p>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .terms-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--accent-dark);
+  }
+
+  h2 {
+    font-size: 1.8rem;
+    margin: 2rem 0 1rem;
+    color: var(--accent-dark);
+  }
+
+  section {
+    margin-bottom: 2rem;
+  }
+
+  p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+
+  ul {
+    margin: 1rem 0;
+    padding-left: 2rem;
+  }
+
+  li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 768px) {
+    .terms-content {
+      padding: 1rem;
+    }
+  }
+</style>

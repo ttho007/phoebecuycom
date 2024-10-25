@@ -1,0 +1,99 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+
+interface Props {
+	title: string;
+	description?: string;
+	currentPage: string;
+}
+
+const { title, description = "Phoebecuy - Your ultimate guide to quilt bedding", currentPage } = Astro.props;
+const currentYear = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content={description} />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="google-site-verification" content="Lan-_fQ8W55RlG6jioFL19qX5SaUiqVAF07W7euBi34" />
+		<link rel="icon" type="image/png" href="/phoebe.png" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title} | Phoebecuy</title>
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={Astro.url} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content="/logo.png" />
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:url" content={Astro.url} />
+		<meta property="twitter:title" content={title} />
+		<meta property="twitter:description" content={description} />
+		<meta property="twitter:image" content="/logo.png" />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<Breadcrumbs currentPage={currentPage} />
+			<slot />
+		</main>
+		<Footer currentYear={currentYear} />
+	</body>
+</html>
+<style is:global>
+	:root {
+		--accent: #0077cc;
+		--accent-light: #4da6ff;
+		--accent-dark: #005599;
+		--text-color: #333;
+		--background-color: #f6f6f6;
+		--card-background: #ffffff;
+	}
+	html {
+		font-family: 'Poppins', sans-serif;
+		background: var(--background-color);
+		color: var(--text-color);
+	}
+	body {
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		min-height: 100vh;
+	}
+	main {
+		flex: 1;
+		width: 100%;
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 2rem;
+		box-sizing: border-box;
+	}
+	img {
+		max-width: 100%;
+		height: auto;
+		border-radius: 8px;
+	}
+	h1, h2, h3, h4, h5, h6 {
+		color: var(--accent-dark);
+	}
+	a {
+		color: var(--accent);
+		text-decoration: none;
+		transition: color 0.3s ease;
+	}
+	a:hover {
+		color: var(--accent-light);
+	}
+	@media (max-width: 768px) {
+		main {
+			padding: 1rem;
+		}
+	}
+</style>

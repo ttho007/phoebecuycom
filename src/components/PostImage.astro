@@ -1,0 +1,36 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  className?: string;
+}
+
+const { src, alt, className = '' } = Astro.props;
+
+// Default fallback image if the provided image is unavailable
+const fallbackImage = "https://images.unsplash.com/photo-1528301721190-186c3bd85418?fm=jpg&w=1200";
+
+// List of verified images we can use as fallbacks
+const verifiedImages = [
+  "https://images.unsplash.com/photo-1528301721190-186c3bd85418?fm=jpg&w=1200",
+  "https://images.unsplash.com/photo-1513364776144-60967b0f800f?fm=jpg&w=1200",
+  "https://images.unsplash.com/photo-1605134542908-581a01bc658d?fm=jpg&w=1200",
+  "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?fm=jpg&w=1200",
+  "https://images.unsplash.com/photo-1517697471339-4aa32003c11a?fm=jpg&w=1200",
+  "https://images.unsplash.com/photo-1528893583363-e8a0c1ddde72?fm=jpg&w=1200",
+  "https://images.unsplash.com/photo-1519687079572-8a59aa2a7c6a?fm=jpg&w=1200",
+  "https://images.unsplash.com/photo-1596586371480-bf9119b62c74?fm=jpg&w=1200"
+];
+
+// Get a random verified image
+const getRandomImage = () => {
+  return verifiedImages[Math.floor(Math.random() * verifiedImages.length)];
+};
+---
+
+<img
+  src={src || getRandomImage()}
+  alt={alt}
+  class={className}
+  onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1528301721190-186c3bd85418?fm=jpg&w=1200';"
+/>

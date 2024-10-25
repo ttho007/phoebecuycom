@@ -1,0 +1,222 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import PostImage from '../components/PostImage.astro';
+
+const blogPosts = await getCollection('blog');
+const pillarPages = await getCollection('pillars');
+
+// Combine and sort content
+const allContent = [...blogPosts, ...pillarPages.map(pillar => ({
+  ...pillar,
+  data: {
+    ...pillar.data,
+    pubDate: new Date(0),
+    type: 'pillar'
+  }
+}))];
+
+// Sort posts by date, most recent first
+const sortedContent = allContent.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const recentContent = sortedContent.slice(0, 4);
+
+const careGuides = [
+  { title: 'How to Wash and Dry Cotton Quilts', url: '/guides/washing-cotton-quilts' },
+  { title: 'Caring for Vintage or Heirloom Quilts', url: '/guides/caring-for-heirloom-quilts' },
+  { title: 'Storing Quilts Properly', url: '/guides/storing-quilts-properly' },
+  { title: 'Repairing Common Quilt Issues', url: '/guides/repairing-common-quilt-issues' },
+].slice(0, 4);
+
+const fabricGuides = [
+  { title: 'Cotton Quilting Fabrics', url: '/guides/cotton-quilting-fabrics' },
+  { title: 'Wool Batting', url: '/guides/wool-batting' },
+  { title: 'Bamboo Batting', url: '/guides/bamboo-batting' },
+  { title: 'Silk for Quilting', url: '/guides/silk-for-quilting' },
+].slice(0, 4);
+---
+
+<Layout title="Welcome to Phoebecuy" currentPage="/">
+	<main>
+		<h1>Welcome to Phoebecuy</h1>
+		<p class="subtitle">Your ultimate guide to quilt bedding</p>
+		
+		<section class="hero">
+			<PostImage 
+				src="https://images.unsplash.com/photo-1688383454437-c3c6805a8ec0?fm=jpg&w=1200" 
+				alt="Cozy quilt bedding"
+				className="hero-image"
+			/>
+		</section>
+		
+		<section class="content-grid">
+			<div class="grid-item">
+				<h2>Latest Content</h2>
+				<div class="card-grid">
+					{recentContent.map((post) => (
+						<a href={`/blog/${post.slug}`} class="card">
+							<PostImage 
+								src={post.data.image} 
+								alt={post.data.title}
+								className="card-image"
+							/>
+							<div class="card-content">
+								{post.data.type === 'pillar' && <span class="pillar-badge">Guide</span>}
+								<h3>{post.data.title}</h3>
+								<p>{post.data.description}</p>
+							</div>
+						</a>
+					))}
+				</div>
+				<a href="/blog" class="view-all">View all content</a>
+			</div>
+
+			<div class="guides-container">
+				<div class="grid-item">
+					<h2>Care Guides</h2>
+					<div class="card-grid">
+						{careGuides.map((guide) => (
+							<a href={guide.url} class="card">
+								<div class="card-content">
+									<h3>{guide.title}</h3>
+								</div>
+							</a>
+						))}
+					</div>
+					<a href="/guides/care" class="view-all">View all care guides</a>
+				</div>
+
+				<div class="grid-item">
+					<h2>Fabric Guides</h2>
+					<div class="card-grid">
+						{fabricGuides.map((guide) => (
+							<a href={guide.url} class="card">
+								<div class="card-content">
+									<h3>{guide.title}</h3>
+								</div>
+							</a>
+						))}
+					</div>
+					<a href="/guides/fabric" class="view-all">View all fabric guides</a>
+				</div>
+			</div>
+		</section>
+	</main>
+</Layout>
+
+<style>
+	main {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 2rem;
+	}
+	h1 {
+		font-size: 3rem;
+		font-weight: 700;
+		margin-bottom: 0.5rem;
+		text-align: center;
+	}
+	.subtitle {
+		font-size: 1.5rem;
+		color: #666;
+		text-align: center;
+		margin-bottom: 2rem;
+	}
+	.hero {
+		margin-bottom: 3rem;
+	}
+	.hero-image {
+		width: 100%;
+		border-radius: 10px;
+		box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+	}
+	.content-grid {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+	}
+	.guides-container {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 2rem;
+	}
+	.grid-item {
+		background-color: #f9f9f9;
+		border-radius: 10px;
+		padding: 1.5rem;
+		box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+	}
+	h2 {
+		font-size: 1.8rem;
+		margin-bottom: 1rem;
+		color: #333;
+	}
+	.card-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 1rem;
+	}
+	.card {
+		background-color: #fff;
+		border-radius: 8px;
+		overflow: hidden;
+		transition: transform 0.3s ease, box-shadow 0.3s ease;
+		text-decoration: none;
+		color: inherit;
+		display: flex;
+		flex-direction: column;
+		position: relative;
+	}
+	.card:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+	}
+	.card-image {
+		width: 100%;
+		height: 150px;
+		object-fit: cover;
+	}
+	.card-content {
+		padding: 1rem;
+		flex-grow: 1;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	}
+	.card h3 {
+		font-size: 1.2rem;
+		margin-bottom: 0.5rem;
+	}
+	.card p {
+		font-size: 0.9rem;
+		color: #666;
+	}
+	.view-all {
+		display: inline-block;
+		margin-top: 1rem;
+		color: #0077cc;
+		text-decoration: none;
+		font-weight: 600;
+	}
+	.view-all:hover {
+		text-decoration: underline;
+	}
+	.pillar-badge {
+		position: absolute;
+		top: 1rem;
+		right: 1rem;
+		background: var(--accent);
+		color: white;
+		padding: 0.25rem 0.75rem;
+		border-radius: 1rem;
+		font-size: 0.8rem;
+		font-weight: bold;
+	}
+	@media (max-width: 768px) {
+		.guides-container {
+			grid-template-columns: 1fr;
+		}
+		.card-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

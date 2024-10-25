@@ -1,0 +1,58 @@
+---
+interface Props {
+	currentYear: number;
+}
+
+const { currentYear } = Astro.props;
+---
+<footer>
+	<div class="footer-content">
+		<p>&copy; {currentYear} Phoebecuy. All rights reserved.</p>
+		<nav>
+			<a href="/privacy-policy">Privacy Policy</a>
+			<a href="/terms-of-service">Terms of Service</a>
+			<a href="/contact">Contact Us</a>
+		</nav>
+	</div>
+</footer>
+
+<style>
+	footer {
+		background-color: var(--card-background);
+		padding: 2rem 0;
+		margin-top: 2rem;
+	}
+	.footer-content {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 2rem;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	p {
+		margin: 0;
+	}
+	nav {
+		display: flex;
+		gap: 1.5rem;
+	}
+	a {
+		color: var(--text-color);
+		text-decoration: none;
+		transition: color 0.3s ease;
+	}
+	a:hover {
+		color: var(--accent);
+	}
+	@media (max-width: 768px) {
+		.footer-content {
+			flex-direction: column;
+			align-items: center;
+			text-align: center;
+		}
+		nav {
+			margin-top: 1rem;
+		}
+	}
+</style>

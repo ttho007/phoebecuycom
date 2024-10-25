@@ -1,0 +1,70 @@
+---
+---
+<header>
+	<nav>
+		<div class="logo">
+			<a href="/">
+				<img src="/logo.png" alt="Phoebecuy" width="200" height="50" />
+			</a>
+		</div>
+		<div class="nav-links">
+			<a href="/">Home</a>
+			<a href="/shop">Shop</a>
+			<a href="/blog">Blog & Guides</a>
+			<a href="/guides/care">Care Guides</a>
+			<a href="/guides/fabric">Fabric Guides</a>
+		</div>
+	</nav>
+</header>
+
+<style>
+	header {
+		background-color: #fff;
+		padding: 1rem;
+		box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+	}
+	nav {
+		max-width: 1200px;
+		margin: 0 auto;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0 1rem;
+	}
+	.logo {
+		display: flex;
+		align-items: center;
+	}
+	.logo img {
+		height: auto;
+		width: 200px;
+		object-fit: contain;
+	}
+	.nav-links {
+		display: flex;
+		gap: 2rem;
+	}
+	a {
+		color: #333;
+		text-decoration: none;
+		font-weight: 600;
+		transition: color 0.3s ease;
+	}
+	a:hover {
+		color: var(--accent);
+	}
+	@media (max-width: 768px) {
+		nav {
+			flex-direction: column;
+			gap: 1rem;
+		}
+		.nav-links {
+			flex-direction: column;
+			align-items: center;
+			gap: 1rem;
+		}
+		.logo img {
+			width: 150px;
+		}
+	}
+</style>

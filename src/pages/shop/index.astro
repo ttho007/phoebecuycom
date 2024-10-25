@@ -1,0 +1,170 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ProductCard from '../../components/ProductCard.astro';
+
+const products = [
+  {
+    title: "Handmade Cotton Quilt - Floral Pattern",
+    price: 199.99,
+    image: "https://images.unsplash.com/photo-1528301721190-186c3bd85418?fm=jpg&w=1200",
+    slug: "handmade-cotton-quilt-floral",
+    description: "Beautiful handcrafted quilt with intricate floral patterns, perfect for any bedroom."
+  },
+  {
+    title: "Vintage Style Patchwork Quilt",
+    price: 249.99,
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?fm=jpg&w=1200",
+    slug: "vintage-style-patchwork-quilt",
+    description: "Classic patchwork design inspired by traditional quilting patterns."
+  },
+  {
+    title: "Modern Geometric Quilt Set",
+    price: 299.99,
+    image: "https://images.unsplash.com/photo-1605134542908-581a01bc658d?fm=jpg&w=1200",
+    slug: "modern-geometric-quilt-set",
+    description: "Contemporary quilt set featuring bold geometric patterns."
+  },
+  {
+    title: "Luxury Wool Quilt - King Size",
+    price: 399.99,
+    image: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?fm=jpg&w=1200",
+    slug: "luxury-wool-quilt-king",
+    description: "Premium wool quilt offering exceptional warmth and comfort."
+  },
+  {
+    title: "Bamboo Cotton Blend Quilt",
+    price: 279.99,
+    image: "https://images.unsplash.com/photo-1517697471339-4aa32003c11a?fm=jpg&w=1200",
+    slug: "bamboo-cotton-blend-quilt",
+    description: "Eco-friendly quilt made from sustainable bamboo and cotton blend."
+  },
+  {
+    title: "Artisan Hand-Stitched Quilt",
+    price: 349.99,
+    image: "https://images.unsplash.com/photo-1528893583363-e8a0c1ddde72?fm=jpg&w=1200",
+    slug: "artisan-hand-stitched-quilt",
+    description: "Meticulously hand-stitched quilt showcasing traditional craftsmanship."
+  },
+  {
+    title: "Organic Cotton Baby Quilt",
+    price: 129.99,
+    image: "https://images.unsplash.com/photo-1519687079572-8a59aa2a7c6a?fm=jpg&w=1200",
+    slug: "organic-cotton-baby-quilt",
+    description: "Soft and gentle organic cotton quilt perfect for babies."
+  },
+  {
+    title: "Heritage Collection Quilt",
+    price: 449.99,
+    image: "https://images.unsplash.com/photo-1596586371480-bf9119b62c74?fm=jpg&w=1200",
+    slug: "heritage-collection-quilt",
+    description: "Premium quilt featuring timeless patterns from our heritage collection."
+  },
+  {
+    title: "Seasonal Reversible Quilt",
+    price: 259.99,
+    image: "https://images.unsplash.com/photo-1584468126774-15f8e7c7a7ef?fm=jpg&w=1200",
+    slug: "seasonal-reversible-quilt",
+    description: "Versatile reversible quilt suitable for different seasons."
+  },
+  {
+    title: "Designer Series Quilt",
+    price: 499.99,
+    image: "https://images.unsplash.com/photo-1613987549117-13c4781b32d3?fm=jpg&w=1200",
+    slug: "designer-series-quilt",
+    description: "Exclusive designer quilt featuring unique contemporary patterns."
+  }
+];
+---
+
+<Layout title="Shop Quilts" description="Browse our collection of handcrafted quilts" currentPage="/shop">
+  <main class="shop-content">
+    <header class="shop-header">
+      <h1>Shop Our Collection</h1>
+      <p>Discover our handcrafted quilts made with care and attention to detail</p>
+    </header>
+
+    <div class="filters">
+      <select id="sort-by" class="filter-select">
+        <option value="featured">Featured</option>
+        <option value="price-low">Price: Low to High</option>
+        <option value="price-high">Price: High to Low</option>
+        <option value="newest">Newest</option>
+      </select>
+    </div>
+
+    <div class="product-grid">
+      {products.map((product) => (
+        <ProductCard {...product} />
+      ))}
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .shop-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  .shop-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--accent-dark);
+  }
+
+  .shop-header p {
+    font-size: 1.2rem;
+    color: #666;
+  }
+
+  .filters {
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .filter-select {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: white;
+    cursor: pointer;
+  }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    .shop-content {
+      padding: 1rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    .product-grid {
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+  }
+</style>
+
+<script>
+  const sortSelect = document.getElementById('sort-by');
+  sortSelect?.addEventListener('change', (e) => {
+    const target = e.target as HTMLSelectElement;
+    // Here you would typically handle the sorting
+    console.log('Sort by:', target.value);
+  });
+</script>

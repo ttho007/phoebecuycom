@@ -1,0 +1,214 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ProductCard from '../../components/ProductCard.astro';
+
+export function getStaticPaths() {
+  const products = [
+    {
+      title: "Handmade Cotton Quilt - Floral Pattern",
+      price: 199.99,
+      image: "https://images.unsplash.com/photo-1528301721190-186c3bd85418?fm=jpg&w=1200",
+      slug: "handmade-cotton-quilt-floral",
+      description: "Beautiful handcrafted quilt with intricate floral patterns, perfect for any bedroom.",
+      details: {
+        materials: ["100% Cotton", "Cotton batting"],
+        dimensions: "90\" x 90\" (Queen size)",
+        care: "Machine washable on gentle cycle, tumble dry low",
+        features: [
+          "Handcrafted with care",
+          "Pre-washed fabric",
+          "Double-stitched for durability",
+          "Includes care instructions"
+        ]
+      }
+    },
+    // Add more products here with their full details
+  ];
+
+  return products.map((product) => ({
+    params: { slug: product.slug },
+    props: { product }
+  }));
+}
+
+const { product } = Astro.props;
+
+// Related products would typically be fetched based on category, tags, etc.
+const relatedProducts = [
+  {
+    title: "Vintage Style Patchwork Quilt",
+    price: 249.99,
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?fm=jpg&w=1200",
+    slug: "vintage-style-patchwork-quilt",
+    description: "Classic patchwork design inspired by traditional quilting patterns."
+  },
+  {
+    title: "Modern Geometric Quilt Set",
+    price: 299.99,
+    image: "https://images.unsplash.com/photo-1605134542908-581a01bc658d?fm=jpg&w=1200",
+    slug: "modern-geometric-quilt-set",
+    description: "Contemporary quilt set featuring bold geometric patterns."
+  }
+];
+---
+
+<Layout title={product.title} description={product.description} currentPage={`/shop/${product.slug}`}>
+  <main class="product-page">
+    <div class="product-container">
+      <div class="product-image">
+        <img src={product.image} alt={product.title} />
+      </div>
+
+      <div class="product-info">
+        <h1>{product.title}</h1>
+        <p class="price">${product.price.toFixed(2)}</p>
+        <p class="description">{product.description}</p>
+
+        <div class="details">
+          <h2>Product Details</h2>
+          <ul>
+            <li><strong>Materials:</strong> {product.details.materials.join(', ')}</li>
+            <li><strong>Dimensions:</strong> {product.details.dimensions}</li>
+            <li><strong>Care:</strong> {product.details.care}</li>
+          </ul>
+
+          <h3>Features</h3>
+          <ul>
+            {product.details.features.map(feature => (
+              <li>{feature}</li>
+            ))}
+          </ul>
+        </div>
+
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+    </div>
+
+    <section class="related-products">
+      <h2>You May Also Like</h2>
+      <div class="related-grid">
+        {relatedProducts.map((relatedProduct) => (
+          <ProductCard {...relatedProduct} />
+        ))}
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .product-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  .product-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 4rem;
+  }
+
+  .product-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+
+  .product-info h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--accent-dark);
+  }
+
+  .price {
+    font-size: 2rem;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+
+  .description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+
+  .details {
+    margin-bottom: 2rem;
+  }
+
+  .details h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .details h3 {
+    font-size: 1.2rem;
+    margin: 1rem 0;
+  }
+
+  .details ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .details li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+  }
+
+  .add-to-cart {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .add-to-cart:hover {
+    background: var(--accent-dark);
+  }
+
+  .related-products {
+    margin-top: 4rem;
+  }
+
+  .related-products h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    .product-container {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .product-info h1 {
+      font-size: 2rem;
+    }
+
+    .related-grid {
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+  }
+</style>
+
+<script>
+  const addToCartButton = document.querySelector('.add-to-cart');
+  addToCartButton?.addEventListener('click', () => {
+    // Here you would typically handle adding the item to the cart
+    alert('Item added to cart!');
+  });
+</script>

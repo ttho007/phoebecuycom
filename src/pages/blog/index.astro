@@ -1,0 +1,145 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import PostImage from '../../components/PostImage.astro';
+
+const blogPosts = await getCollection('blog');
+const pillarPages = await getCollection('pillars');
+
+// Combine blog posts and pillar pages
+const allContent = [...blogPosts, ...pillarPages.map(pillar => ({
+  ...pillar,
+  data: {
+    ...pillar.data,
+    pubDate: new Date(0), // Set pillar content to appear at the top
+    type: 'pillar'
+  }
+}))];
+
+// Sort combined content by date
+const sortedContent = allContent.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+---
+
+<Layout title="Quilt Bedding Blog & Guides" description="Explore our latest articles, comprehensive guides, and expert insights on quilt bedding">
+	<main>
+		<h1>Quilt Bedding Resources</h1>
+		<p class="subtitle">Discover expert guides, tips, and inspiration for quilt enthusiasts</p>
+		
+		<div class="blog-grid">
+			{sortedContent.map((post, index) => (
+				<article class={`blog-card ${index === 0 ? 'featured' : ''} ${post.data.type === 'pillar' ? 'pillar' : ''}`}>
+					<a href={`/blog/${post.slug}`}>
+						<PostImage 
+							src={post.data.image} 
+							alt={post.data.title}
+							className="card-image"
+						/>
+						<div class="content">
+							{post.data.type === 'pillar' && <span class="pillar-badge">Guide</span>}
+							<h2>{post.data.title}</h2>
+							{post.data.type !== 'pillar' && (
+								<p class="date">{new Date(post.data.pubDate).toLocaleDateString('en-US', {
+									year: 'numeric',
+									month: 'long',
+									day: 'numeric'
+								})}</p>
+							)}
+							<p class="description">{post.data.description}</p>
+						</div>
+					</a>
+				</article>
+			))}
+		</div>
+	</main>
+</Layout>
+
+<style>
+	main {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 2rem;
+	}
+	h1 {
+		font-size: 2.5rem;
+		margin-bottom: 0.5rem;
+		text-align: center;
+	}
+	.subtitle {
+		font-size: 1.2rem;
+		color: #666;
+		text-align: center;
+		margin-bottom: 2rem;
+	}
+	.blog-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+		gap: 2rem;
+	}
+	.blog-card {
+		background: #fff;
+		border-radius: 10px;
+		overflow: hidden;
+		box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+		transition: transform 0.3s ease, box-shadow 0.3s ease;
+		position: relative;
+	}
+	.blog-card:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+	}
+	.blog-card a {
+		text-decoration: none;
+		color: inherit;
+	}
+	.card-image {
+		width: 100%;
+		height: 200px;
+		object-fit: cover;
+	}
+	.blog-card .content {
+		padding: 1.5rem;
+	}
+	.blog-card h2 {
+		font-size: 1.4rem;
+		margin-bottom: 0.5rem;
+		color: var(--accent-dark);
+	}
+	.blog-card .date {
+		font-size: 0.9rem;
+		color: #666;
+		margin-bottom: 0.5rem;
+	}
+	.blog-card .description {
+		font-size: 1rem;
+		color: #333;
+	}
+	.featured {
+		grid-column: 1 / -1;
+	}
+	.featured .card-image {
+		height: 300px;
+	}
+	.featured h2 {
+		font-size: 1.8rem;
+	}
+	.pillar-badge {
+		position: absolute;
+		top: 1rem;
+		right: 1rem;
+		background: var(--accent);
+		color: white;
+		padding: 0.25rem 0.75rem;
+		border-radius: 1rem;
+		font-size: 0.8rem;
+		font-weight: bold;
+	}
+	.pillar {
+		border: 2px solid var(--accent);
+	}
+	@media (max-width: 768px) {
+		.blog-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

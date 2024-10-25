@@ -1,0 +1,45 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const careGuides = [
+  { title: 'How to Wash and Dry Cotton Quilts', url: '/guides/washing-cotton-quilts' },
+  { title: 'Caring for Vintage or Heirloom Quilts', url: '/guides/caring-for-heirloom-quilts' },
+  { title: 'Storing Quilts Properly', url: '/guides/storing-quilts-properly' },
+  { title: 'Repairing Common Quilt Issues', url: '/guides/repairing-common-quilt-issues' },
+  { title: 'Caring for Wool Quilts', url: '/guides/wool-quilt-care' },
+];
+
+---
+
+<Layout title="Quilt Care Guides" description="Comprehensive guides on quilt care and maintenance">
+  <h1>Quilt Care Guides</h1>
+  
+  <div class="guide-grid">
+    {careGuides.map((guide) => (
+      <div class="guide-item">
+        <a href={guide.url}>{guide.title}</a>
+      </div>
+    ))}
+  </div>
+</Layout>
+
+<style>
+  .guide-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  .guide-item {
+    background-color: #f0f0f0;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  .guide-item a {
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  .guide-item a:hover {
+    text-decoration: underline;
+  }
+</style>

@@ -1,0 +1,101 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const pillarPages = await getCollection('pillars');
+
+---
+
+<Layout title="Quilt Bedding Pillar Content" description="Explore our comprehensive guides on various aspects of quilt bedding">
+	<main>
+		<h1>Quilt Bedding Pillar Content</h1>
+		<p class="subtitle">In-depth guides to master every aspect of quilt bedding</p>
+		
+		<div class="pillars-grid">
+			{pillarPages.map((pillar, index) => (
+				<article class={`pillar-card ${index < 2 ? 'featured' : ''}`}>
+					<a href={`/pillars/${pillar.slug}`}>
+						<img src={pillar.data.image} alt={pillar.data.title} />
+						<div class="content">
+							<h2>{pillar.data.title}</h2>
+							<p class="description">{pillar.data.description}</p>
+						</div>
+					</a>
+				</article>
+			))}
+		</div>
+	</main>
+</Layout>
+
+<style>
+	main {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 2rem;
+	}
+	h1 {
+		font-size: 2.5rem;
+		margin-bottom: 0.5rem;
+		text-align: center;
+	}
+	.subtitle {
+		font-size: 1.2rem;
+		color: #666;
+		text-align: center;
+		margin-bottom: 2rem;
+	}
+	.pillars-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+		gap: 2rem;
+	}
+	.pillar-card {
+		background: #fff;
+		border-radius: 10px;
+		overflow: hidden;
+		box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+		transition: transform 0.3s ease, box-shadow 0.3s ease;
+	}
+	.pillar-card:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+	}
+	.pillar-card a {
+		text-decoration: none;
+		color: inherit;
+	}
+	.pillar-card img {
+		width: 100%;
+		height: 200px;
+		object-fit: cover;
+	}
+	.pillar-card .content {
+		padding: 1.5rem;
+	}
+	.pillar-card h2 {
+		font-size: 1.4rem;
+		margin-bottom: 0.5rem;
+		color: var(--accent-dark);
+	}
+	.pillar-card .description {
+		font-size: 1rem;
+		color: #333;
+	}
+	.featured {
+		grid-column: span 2;
+	}
+	.featured img {
+		height: 300px;
+	}
+	.featured h2 {
+		font-size: 1.8rem;
+	}
+	@media (max-width: 768px) {
+		.pillars-grid {
+			grid-template-columns: 1fr;
+		}
+		.featured {
+			grid-column: span 1;
+		}
+	}
+</style>
